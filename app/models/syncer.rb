@@ -173,4 +173,23 @@ class Syncer < ActiveRecord::Base
       end
     end
   end
+
+  class Job
+    include SuckerPunch::Job
+
+    def perform(data)
+      #should this call syncer here?
+      puts data
+    end
+
+    def later(sec, data)
+      after(sec) { perform(data) }
+    end
+  end
+
+  # this is how the job is called
+  # Job.new.async.perform("asdf")
+  # Job.new.async.later(60, "asdf")
+  # what is the heroku timeout?
+
 end
